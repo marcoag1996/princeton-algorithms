@@ -4,7 +4,7 @@ import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
     private final double [] fractions;
-    private final double CONFIDENCE_95 = 1.96;
+    private final double confidence_95 = 1.96;
 
     // perform independent trials on an n-by-n grid
     public PercolationStats(int n, int trials) {
@@ -18,11 +18,11 @@ public class PercolationStats {
         Percolation percolation = new Percolation(n);
         int countOpen = 0;
 
-        for(int i = 0; i < trials; i++) {
-            while(percolation.percolates() == false) {
+        for (int i = 0; i < trials; i++) {
+            while (!percolation.percolates()) {
                 int col = StdRandom.uniformInt(n) + 1; // base 1
                 int row = StdRandom.uniformInt(n) + 1; // base 1
-                if(!percolation.isOpen(row, col)) {
+                if (!percolation.isOpen(row, col)) {
                     percolation.open(row, col);
                     countOpen++;
                 }
@@ -43,12 +43,12 @@ public class PercolationStats {
 
     // low endpoint of 95% confidence interval
     public double confidenceLo() {
-        return mean() - CONFIDENCE_95 * stddev() / Math.sqrt(fractions.length);
+        return mean() - confidence_95 * stddev() / Math.sqrt(fractions.length);
     }
 
     // high endpoint of 95% confidence interval 
     public double confidenceHi() {
-        return mean() + CONFIDENCE_95 * stddev() / Math.sqrt(fractions.length);
+        return mean() + confidence_95 * stddev() / Math.sqrt(fractions.length);
     }
 
     // test client (see below)
@@ -57,9 +57,9 @@ public class PercolationStats {
         int t = Integer.parseInt(args[1]);
 
         PercolationStats percolationStats = new PercolationStats(n, t);
-        StdOut.print("mean                    = " + percolationStats.mean());
-        StdOut.print("stddev                  = " + percolationStats.stddev());
-        StdOut.print("95% confidence interval = " + percolationStats.confidenceLo() + ", " + percolationStats.confidenceHi());
+        StdOut.println("mean                    = " + percolationStats.mean());
+        StdOut.println("stddev                  = " + percolationStats.stddev());
+        StdOut.println("95% confidence interval = " + percolationStats.confidenceLo() + ", " + percolationStats.confidenceHi());
 
     }
 }
