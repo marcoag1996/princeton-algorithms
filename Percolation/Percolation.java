@@ -17,7 +17,7 @@ public class Percolation {
         this.n = n;
         this.normalQU = new WeightedQuickUnionUF(n*n+2); // add one at the top and bottom, main initial point
         this.isOpen = new boolean[n*n+2];
-        this.openCount = 0;
+        //this.openCount = 0;
         this.startIndex = 0;
         this.endIndex = n*n+1;
         this.isOpen[startIndex] = true;
