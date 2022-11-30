@@ -3,7 +3,6 @@ import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
-    private final WeightedQuickUnionUF normalQU;
     private final double [] fractions;
     private final double CONFIDENCE_95 = 1.96;
 

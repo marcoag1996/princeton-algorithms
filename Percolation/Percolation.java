@@ -6,7 +6,7 @@ public class Percolation {
     private final WeightedQuickUnionUF normalQU;
     private final boolean []isOpen;
     private final int n;
-    private final int openCount;
+    private int openCount;
     private final int startIndex;
     private final int endIndex;
     //creates n-by-n grid, all sites blocked
@@ -27,11 +27,9 @@ public class Percolation {
     public boolean checkBounds(int row, int col) {
         if (row < 1 || row > n) {
             throw new IndexOutOfBoundsException("Row is out of bounds.");
-            return false;
         }
         if (col < 1 || col > n) {
             throw new IndexOutOfBoundsException("Column is out of bounds.");
-            return false;
         }
         return true;
     }
@@ -78,7 +76,7 @@ public class Percolation {
 
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
-        return this.normalQU.connected(startIndex, getIndex(row, col));
+        return this.normalQU.find(startIndex) == this.normalQU.find(getIndex(row, col));
     }
 
     // returns the number of open sites
@@ -88,7 +86,7 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
-        return this.normalQU.connected(this.startIndex, this.endIndex);
+        return this.normalQU.find(this.startIndex) == this.normalQU.find(this.endIndex);
     }
 
     // test client (optional)
