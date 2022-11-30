@@ -40,11 +40,11 @@ public class Percolation {
         this.isOpen[index] = true;
         openCount++;
 
-        //connect it to the initial point if row 0
-        if(row == 1) {
+        // connect it to the initial point if row 0
+        if (row == 1) {
             this.normalQU.union(index, this.startIndex);
         }
-        if(row == this.n) {
+        if (row == this.n) {
             this.normalQU.union(index, this.endIndex);
         }
         addUnion(row, col);
@@ -57,11 +57,11 @@ public class Percolation {
 
     private void addUnion(int row, int col) {
         // check for valid connections to neighbors
-        int[] cols = {col,col,col-1,col+1};
-        int[] rows = {row-1,row+1,row,row};
-        for(int i = 0; i < cols.length; i++) {
+        int[] cols = {col, col, col-1, col+1};
+        int[] rows = {row-1, row+1, row, row};
+        for (int i = 0; i < cols.length; i++) {
             // neighbor is valid coordinate and is open
-            if(0 < rows[i] && rows[i] <= n && 0 < cols[i] && cols[i] <= n && isOpen(rows[i], cols[i])) {
+            if (0 < rows[i] && rows[i] <= n && 0 < cols[i] && cols[i] <= n && isOpen(rows[i], cols[i])) {
                 this.normalQU.union(getIndex(row, col), getIndex(rows[i], cols[i]));
             }
         }
