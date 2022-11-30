@@ -4,7 +4,7 @@ import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
     private final double [] fractions;
-    private final double confidence_95 = 1.96;
+    private static final double confidence_95 = 1.96;
 
     // perform independent trials on an n-by-n grid
     public PercolationStats(int n, int trials) {
@@ -27,7 +27,7 @@ public class PercolationStats {
                     countOpen++;
                 }
             }
-            fractions[i] = countOpen / (n*n);
+            fractions[i] = countOpen * 1.0 / (n*n);
         }
     }
 
