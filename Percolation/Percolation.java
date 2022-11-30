@@ -15,11 +15,11 @@ public class Percolation {
             throw new IllegalArgumentException("n must be greater than 0.");
         }
         this.n = n;
-        this.normalQU = new WeightedQuickUnionUF(n*n+1);//add one at the top, main initial point
+        this.normalQU = new WeightedQuickUnionUF(n*n+2);//add one at the top and bottom, main initial point
         this.isOpen = new boolean[n*n+2];
         this.openCount = 0;
         this.startIndex = 0;
-        this.endIndex = n*n+2;
+        this.endIndex = n*n+1;
         this.isOpen[startIndex] = true;
         this.isOpen[endIndex] = true;
     }
@@ -62,7 +62,7 @@ public class Percolation {
         int[] rows = {row-1,row+1,row,row};
         for(int i = 0; i < 4; i++) {
             // neighbor is valid coordinate and is open
-            if(checkBounds(rows[i], cols[i]) && isOpen(rows[i], cols[i])) {
+            if(0 < rows[i] && rows[i] <= n && 0 < cols[i] && cols[i] <= n && isOpen(rows[i], cols[i])) {
                 this.normalQU.union(getIndex(row, col), getIndex(rows[i], cols[i]));
             }
         }
