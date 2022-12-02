@@ -36,8 +36,10 @@ public class Percolation {
     public void open(int row, int col) {
         checkBounds(row, col);
         int index = getIndex(row, col);
-        this.isOpen[index] = true;
-        openCount++;
+        if (!isOpen(row, col)) {
+            this.isOpen[index] = true;
+            openCount++;
+        } 
 
         // connect it to the initial point if row 0
         if (row == 1) {
