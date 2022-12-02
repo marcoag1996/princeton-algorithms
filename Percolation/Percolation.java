@@ -3,6 +3,7 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
     private final WeightedQuickUnionUF normalQU;
+    private final WeightedQuickUnionUF backwashQU;
     private final boolean []isOpen;
     private final int n;
     private int openCount;
@@ -14,7 +15,9 @@ public class Percolation {
             throw new IllegalArgumentException("n must be greater than 0.");
         }
         this.n = n;
-        this.normalQU = new WeightedQuickUnionUF(n*n+2); // add one at the top and bottom, main initial point
+
+        this.backwashQU = new WeightedQuickUnionUF(n*n+2); // add one at the top and bottom, main initial point
+        this.normalQU = new WeightedQuickUnionUF(n*n+1);
         this.isOpen = new boolean[n*n+2];
         // this.openCount = 0;
         this.startIndex = 0;
@@ -44,9 +47,10 @@ public class Percolation {
         // connect it to the initial point if row 0
         if (row == 1) {
             this.normalQU.union(index, this.startIndex);
+            this.backwashQU.union(index, this.startIndex);
         }
         if (row == this.n) {
-            this.normalQU.union(index, this.endIndex);
+            this.backwashQU.union(index, this.endIndex);
         }
         addUnion(row, col);
     }
@@ -64,6 +68,7 @@ public class Percolation {
             // neighbor is valid coordinate and is open
             if (0 < rows[i] && rows[i] <= n && 0 < cols[i] && cols[i] <= n && isOpen(rows[i], cols[i])) {
                 this.normalQU.union(getIndex(row, col), getIndex(rows[i], cols[i]));
+                this.backwashQU.union(getIndex(row, col), getIndex(rows[i], cols[i]));
             }
         }
     }
