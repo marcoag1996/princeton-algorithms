@@ -92,7 +92,7 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
-         return this.normalQU.find(this.startIndex) == this.normalQU.find(this.endIndex);
+         return this.backwashQU.find(this.startIndex) == this.backwashQU.find(this.endIndex);
         // return this.normalQU.connected(this.startIndex, this.endIndex);
     }
 
