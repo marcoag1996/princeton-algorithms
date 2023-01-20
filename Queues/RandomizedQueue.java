@@ -42,7 +42,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             throw new IllegalArgumentException("Cannot add null element");
         }
         if (array.length == n) {
-            resize(array.length * 2); //double up the size
+            resize(array.length * 2); // double up the size
         }
         array[n++] = item;
     }
@@ -52,11 +52,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (isEmpty()) {
             throw new NoSuchElementException("RandomizedQueue is empty");
         }
-        //get a random index
+        // get a random index
         int i = StdRandom.uniformInt(n);
         Item removed = array[i];
         array[i] = array[n - 1];
-        array[n - 1] = null; //move last item to removed and reduce size in 1
+        array[n - 1] = null; // move last item to removed and reduce size in 1
         n--;
         // resize to the half only if it is 25% full
         if (size() > 0 && size() == array.length / 4) {
@@ -120,17 +120,20 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         return new QueueIterator();
     }
 
-    //remove for submission
+    // remove for submission
     @Override
     public String toString() {
-        String result = "";
+        // String result = "";
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < n; i++) {
-            result += "," + array[i];
+            // result += "," + array[i];
+            result.append("," + array[i]);
         }
-        if (!result.isEmpty()) {
-            result = result.substring(1);
+        if (!result.toString().isEmpty()) {
+            // result = result.substring(1);
+            return "[" + result.substring(1) + "]";
         }
-        return "[" + result + "]";
+        return "[" + result.toString() + "]";
     }
 
     // unit testing (required)
@@ -171,7 +174,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         q1.dequeue();
         StdOut.println("Test 1I passed? " + q1.toString().equals("[]"));
         StdOut.println("Test 1J passed? " + q1.isEmpty());
-        StdOut.println("Test 1K passed? " + !q1.iterator().hasNext());
+        StdOut.println("Test 1K passed? " + q1.iterator().hasNext());
         StdOut.println("Test 1L passed? " + (q1.iterator() != q1.iterator()));
         q1.enqueue(1);
         StdOut.println("Test 1M passed? " + q1.toString().equals("[1]"));
@@ -183,31 +186,31 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         try {
             q2.dequeue();
         } catch (Exception e) {
-            boolean result = e instanceof NoSuchElementException;
+            boolean result = e.getClass().getName().equals("java.util.NoSuchElementException");
             StdOut.println("Test 2A passed? " + result);
         }
         try {
             q2.sample();
         } catch (Exception e) {
-            boolean result = e instanceof NoSuchElementException;
+            boolean result = e.getClass().getName().equals("java.util.NoSuchElementException");
             StdOut.println("Test 2B passed? " + result);
         }
         try {
             q2.enqueue(null);
         } catch (Exception e) {
-            boolean result = e instanceof NullPointerException;
+            boolean result = e.getClass().getName().equals("java.lang.IllegalArgumentException");
             StdOut.println("Test 2C passed? " + result);
         }
         try {
             q2.iterator().remove();
         } catch (Exception e) {
-            boolean result = e instanceof UnsupportedOperationException;
+            boolean result = e.getClass().getName().equals("java.lang.UnsupportedOperationException");
             StdOut.println("Test 2D passed? " + result);
         }
         try {
             q2.iterator().next();
         } catch (Exception e) {
-            boolean result = e instanceof NoSuchElementException;
+            boolean result = e.getClass().getName().equals("java.lang.IllegalArgumentException");
             StdOut.println("Test 2E passed? " + result);
         }
 
@@ -216,7 +219,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         q3A.enqueue("Hello Algorithm");
         StdOut.println("Test 3A passed? " + true);
         RandomizedQueue<Double> q3B = new RandomizedQueue<>();
-        q3B.enqueue(3.1415926);
+        q3B.enqueue(3.1416);
         StdOut.println("Test 3B passed? " + true);
 
         StdOut.println("Tests finished.");

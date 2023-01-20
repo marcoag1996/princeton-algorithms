@@ -22,8 +22,8 @@ public class Deque<Item> implements Iterable<Item> {
     public Deque() {
         head = new Node(null);
         tail = new Node(null);
-        head.next = tail;//dummy
-        tail.prev = head;//dummy
+        head.next = tail; // dummy
+        tail.prev = head; // dummy
     }
 
     // is the deque empty?
@@ -117,14 +117,17 @@ public class Deque<Item> implements Iterable<Item> {
 
     @Override
     public String toString() {
-        String content = "";
+        // String content = "";
+        StringBuilder content = new StringBuilder();
         for (Item item : this) {
-            content += "," + item;
+            // content += "," + item;
+            content.append("," + item);
         }
-        if (!content.isEmpty()) {
-            content = content.substring(1);
+        if (!content.toString().isEmpty()) {
+            // content = content.substring(1);
+            return "[" + content.substring(1) + "]";
         }
-        return "[" + content + "]";
+        return "[" + content.toString() + "]";
     }
 
     // unit testing (required)
@@ -149,50 +152,51 @@ public class Deque<Item> implements Iterable<Item> {
         dq.removeFirst();
         StdOut.println("Test 1I passed? " + (dq.toString().equals("[]")));
         StdOut.println("Test 1J passed? " + dq.isEmpty());
-        StdOut.println("Test 1K passed? " + (dq.iterator().hasNext()));
+        StdOut.println("Test 1K passed? " + (!dq.iterator().hasNext()));
 
         // Test 2: Exceptions
         Deque<Integer> dq2 = new Deque<>();
         try {
             dq2.removeFirst();
-        } catch (Exception e) {
-            boolean result = e instanceof NoSuchElementException;
-            StdOut.println("Test 2A passed? " + result);
+        } catch (NoSuchElementException e) {
+            // boolean result = e instanceof NoSuchElementException;
+            StdOut.println("Test 2A passed? " + true);
         }
 
         try {
             dq2.removeLast();
-        } catch (Exception e) {
-            boolean result = e instanceof NoSuchElementException;
-            StdOut.println("Test 2B passed? " + result);
+        } catch (NoSuchElementException e) {
+            // boolean result = e instanceof NoSuchElementException;
+            StdOut.println("Test 2B passed? " + true);
         }
 
         try {
             dq2.addFirst(null);
-        } catch (Exception e) {
-            boolean result = e instanceof IllegalArgumentException;
-            StdOut.println("Test 2C passed? " + result);
+        } catch (IllegalArgumentException e) {
+            // boolean result = e instanceof IllegalArgumentException;
+            StdOut.println("Test 2C passed? " + true);
         }
 
         try {
             dq2.addLast(null);
-        } catch (Exception e) {
-            boolean result = e instanceof IllegalArgumentException;
-            StdOut.println("Test 2D passed? " + result);
+        } catch (IllegalArgumentException e) {
+            // boolean result = e instanceof IllegalArgumentException;
+            StdOut.println("Test 2D passed? " + true);
         }
 
         try {
             dq2.iterator().remove();
-        } catch (Exception e) {
-            boolean result = e instanceof UnsupportedOperationException;
+        } catch (UnsupportedOperationException e) {
+            // boolean result = e instanceof UnsupportedOperationException;
+            boolean result = true;
             StdOut.println("Test 2E passed? " + result);
         }
 
         try {
             dq2.iterator().next();
-        } catch (Exception e) {
-            boolean result = e instanceof NoSuchElementException;
-            StdOut.println("Test 2F passed? " + result);
+        } catch (NoSuchElementException e) {
+            // boolean result = e instanceof NoSuchElementException;
+            StdOut.println("Test 2F passed? " + true);
         }
 
         // Test 3: types
@@ -200,8 +204,8 @@ public class Deque<Item> implements Iterable<Item> {
         dq3.addFirst("Hello world");
         StdOut.println("Test 3A passed? " + dq3.toString().equals("[Hello world]"));
         Deque<Double> dq4 = new Deque<>();
-        dq3.addFirst("3.1416");
-        StdOut.println("Test 3A passed? " + dq3.toString().equals("[3.1416]"));
+        dq4.addFirst(3.1416);
+        StdOut.println("Test 3A passed? " + dq4.toString().equals("[3.1416]"));
 
         StdOut.println("All tests finished");
     }
