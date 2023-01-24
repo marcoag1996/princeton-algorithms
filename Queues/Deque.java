@@ -204,7 +204,7 @@ public class Deque<Item> implements Iterable<Item> {
         dq3.addFirst("Hello world");
         StdOut.println("Test 3A passed? " + dq3.toString().equals("[Hello world]"));
         Deque<Double> dq4 = new Deque<>();
-        dq4.addFirst(3.1416);
+        dq4.addFirst(Math.PI);
         StdOut.println("Test 3A passed? " + dq4.toString().equals("[3.1416]"));
 
         StdOut.println("All tests finished");
