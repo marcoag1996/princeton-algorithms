@@ -13,29 +13,44 @@ import java.util.LinkedList;
 
 public class Solver {
     private boolean solvable;
-    private MinPQ<NodeBoard> minPQ;
+    // private MinPQ<NodeBoard> minPQ;
     private NodeBoard solutionNode;
 
 
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
+        if (initial == null) {
+            throw new IllegalArgumentException("board is null");
+        }
         solutionNode = null;
-        minPQ = new MinPQ<>();
+        MinPQ<NodeBoard> minPQ = new MinPQ<>();
+        MinPQ<NodeBoard> twinPQ = new MinPQ<>();
         minPQ.insert(new NodeBoard(initial, 0, null));
+        twinPQ.insert(new NodeBoard(initial.twin(), 0, null));
         while (true) {
             NodeBoard currNode = minPQ.delMin();
+            NodeBoard twinCurrNode = twinPQ.delMin();
             Board currBoard = currNode.getBoard();
+            Board twinCurrBoard = twinCurrNode.getBoard();
             // Check if we found the solution
             if (currBoard.isGoal()) {
                 solvable = true;
                 solutionNode = currNode;
                 break;
             }
+
+            if (twinCurrBoard.isGoal()) {
+                solvable = false;
+                break;
+            }
             // Check if is solvable, if swap any pair is goal(not solvable)
+            /*
             if (currBoard.hamming() == 2 && currBoard.twin().isGoal()) {
                 solvable = false;
                 break;
             }
+
+             */
 
             // Insert possible candidates but the previous
             int moves = currNode.getMoves();
@@ -47,6 +62,17 @@ public class Solver {
                 }
                 minPQ.insert(new NodeBoard(candidates, moves + 1, currNode));
             }
+
+            // Insert possible candidates but the previous
+            int movesTwin = twinCurrNode.getMoves();
+            Board prevBoardTwin = movesTwin > 0 ? twinCurrNode.prev().getBoard() : null;
+
+            for (Board candidates : twinCurrBoard.neighbors()) {
+                if (prevBoardTwin != null && candidates.equals(prevBoardTwin)) { // can't be added
+                    continue;
+                }
+                twinPQ.insert(new NodeBoard(candidates, movesTwin + 1, twinCurrNode));
+            }
         }
     }
 
@@ -54,20 +80,23 @@ public class Solver {
         private final NodeBoard prev;
         private final Board board;
         private final int moves; // moves done until this node
+        private final int priority;
 
         NodeBoard(Board board, int moves, NodeBoard prev) {
+            // caching technique, precompute priority when building object
             this.prev = prev;
             this.board = board;
             this.moves = moves;
+            this.priority = this.board.manhattan() + this.moves;
         }
 
         @Override
         public int compareTo(NodeBoard that) {
-            return this.priority() - that.priority();
+            return this.getPriority() - that.getPriority();
         }
 
-        public int priority() { // using manhattan distance
-            return board.manhattan() + moves;
+        public int getPriority() { // using manhattan distance
+            return priority;
         }
 
         public Board getBoard() {

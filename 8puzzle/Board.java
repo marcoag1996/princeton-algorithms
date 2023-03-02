@@ -4,6 +4,8 @@
  *  Description: API for a board
  **************************************************************************** */
 
+import edu.princeton.cs.algs4.StdIn;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class Board {
     // 0 value represents a blank space
     public Board(int[][] tiles) {
         if (tiles == null) {
-            throw new NullPointerException();
+            throw new IllegalArgumentException();
         }
         this.tiles = copyOf(tiles);
         this.n = tiles.length;
@@ -67,7 +69,7 @@ public class Board {
                 if (row == blankRow && col == blankCol) {
                     continue;
                 }
-                if (manhattan(row, col) != 0) {
+                if (tiles[row][col] != (n * row + col + 1)) {
                     result++;
                 }
             }
@@ -100,7 +102,18 @@ public class Board {
 
     // is this board the goal board?
     public boolean isGoal() {
-        return hamming() == 0;
+        // return hamming() == 0;
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < n; col++) {
+                if (row == blankRow && col == blankCol) {
+                    continue;
+                }
+                if (tiles[row][col] != (n * row + col + 1)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     // does this board equal y?
@@ -174,9 +187,40 @@ public class Board {
         return new Board(cloned);
     }
 
+    // extra method to visualize(n added in the assignment)
+    /*
+    private void draw(double x, double y) {
+        StdDraw.text(x - .03 * n, y, String.valueOf(n));
+        for (int i = 0; i < n; i++) {
+            y -= .03;
+            x -= .03 * n;
+            for (int j = 0; j < n; j++) {
+                StdDraw.text(x, y, String.valueOf(tiles[i][j]));
+                x += 0.03;
+            }
+        }
+    }
+
+     */
+
     // unit testing (not graded)
     public static void main(String[] args) {
-
+        int n = StdIn.readInt();
+        int[][] set = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                set[i][j] = StdIn.readInt();
+            }
+        }
+        Board board = new Board(set);
+        System.out.println(board.dimension());
+        System.out.println(board.hamming());
+        System.out.println(board.isGoal());
+        System.out.println(board.manhattan());
+        for (Board k : board.neighbors()) {
+            System.out.println(k);
+        }
+        System.out.println(board.twin());
     }
 
 }
